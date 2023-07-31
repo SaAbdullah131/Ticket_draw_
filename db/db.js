@@ -69,16 +69,52 @@ class MyDB {
             );
             return tickets;
     }
+    /**
+     * @param {string} ticketId
+     * @param {{username:string,price:number}} ticketBody
+     * @returns {Ticket}
+     */
     //update ticket by id
     updateTicketById(ticketId,ticketBody){
-        
+        const ticket = this.findTicketById(ticketId);
+        ticket.username = ticketBody.username ?? ticket.username;
+        ticket.price = ticketBody.price ?? ticket.price;
+        ticket.updatedAt = new Date();
+
+        return ticket;
     }
+    /**
+     * @param {string} ticketId;
+     */
     // delete ticket by id;
-    deleteTicketById(){
-        
+    deleteTicketById(ticketId){
+            const index = this.tickets.findIndex((ticket)=>{
+                ticket.id === ticketId;
+            });
+            if(index != -1){
+                this.tickets.splice(index,1);
+                return true;
+            }
+            else {
+                return false;
+            }
     }
-    draw(){
-        
+    /**
+     * find winners
+     * @param {number} winnerCount 
+     * @returns {Array<Ticket>}
+     */
+    draw(winnerCount){
+        let indexes = new Array(winnerCount);
+        for(let i = 0;i<indexes.length;i++){
+            let index = Math.floor(Math.random()*this.tickets.length);
+            while(indexes.includes(index)){
+                index = Math.floor(Math.random()*this.tickets.length);
+            }
+            indexes.push(index);
+        };
+        const winners = indexes.map(index=>this.tickets[index]);
+        return winners;
     }
 }
 
