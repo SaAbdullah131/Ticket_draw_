@@ -6,8 +6,16 @@ const db = require('../db/db');
 // For ticketId
 router
 .route('/t/:ticketId')
-.get(()=>{})
-.patch(()=>{})
+.get((req,res)=>{
+    const ticketId = req.params.ticketId;
+    const ticket = db.findTicketById(ticketId);
+    res.status(200).json(ticket);
+})
+.patch((req,res)=>{
+    const ticketId = req.params.ticketId;
+    const updatedTicket = db.updateTicketById(ticketId,req.body);
+    res.status(200).json({message:'updated Successfully',updatedTicket});
+})
 .delete(()=>{})
 
 router.get('/u/:username',()=>{});
