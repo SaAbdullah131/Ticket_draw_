@@ -16,10 +16,19 @@ router
     const updatedTicket = db.updateTicketById(ticketId,req.body);
     res.status(200).json({message:'updated Successfully',updatedTicket});
 })
-.delete(()=>{})
+.delete((req,res)=>{
+    const ticketId = req.params.ticketId;
+    db.deleteTicketById(ticketId);
+    res.status(203).send();
+})
 
-router.get('/u/:username',()=>{});
-router.patch('/u/:username',()=>{});
+router.get('/u/:username',(req,res)=>{
+    const username = req.params.username;
+    const tickets = db.findByUsername(username);
+    res.status(200).json(tickets);
+    
+});
+router.patch('/u/:username',(req,res)=>{});
 router.delete('/u/:username',()=>{});
 
 // single ticket create
